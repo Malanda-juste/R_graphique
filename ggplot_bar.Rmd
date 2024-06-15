@@ -1,0 +1,202 @@
+---
+title: "ggplot_bar"
+author: "MALANDA Juste Hadassa"
+date: "2024-06-15"
+output: html_document
+---
+# Recommandation
+Je vous invite a suivre le cours sur ggplot_point avant de se lancer.
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## gglot2 graphique en bar
+Ce cours montre comment creer de graphiques en barres avec ggplot2.
+Vous allez apprendre : 
+  1. creer et interpreter des graphiques en barres
+  2. utiliser des ajustements de position
+  3. utiliser des facettes pour creer des sous-graphiques
+
+#Installation de gglot2
+
+```{r}
+install.packages("ggplot2")
+```
+
+## Importation de la bibliotheque
+
+```{r}
+library(ggplot2)
+```
+
+
+## Base de donnees
+
+Nous utiliserons la base de donnees diamonds disponible dans le pacquage {ggplot2}
+
+```{r}
+diamonds
+```
+
+#graphique en barre en utilisant la variable cut
+
+```{r}
+ggplot(data = diamonds)+
+  aes(x= cut)+
+  geom_bar()
+```
+
+Pour creer un graphique en barre on utilise geom_bar contrairement au graphique en point (nuage de point).
+Vous avez remarque on ne renseigne pas de y car ggplot() se charge de compter.
+
+## Manuel
+### installation de {tydyr} 
+```{r}
+install.packages("dplyr")
+```
+
+### importation de la library
+```{r}
+library(dplyr)
+```
+
+### fonction count()
+```{r}
+diamonds |>
+  count(cut)
+```
+Le code est un peu avance mais rien de bien complique, le graphique utilise la fonction count avant de tracer les bars. En effet, {ggplot2} va automatiquement compter combien de fois la valeur (x) se trouve dans le jeu de données, puis représenter ce nombre sur l’axe des (y)
+
+## Utilisation de col
+geom_col() : La frequence des barres seront associees a une variable y.
+
+lorsqu'on utilise geom_col()  on specifie la variable y qui va representer la frequence des barres.
+
+Pour cette exemple j'utilise la base de donnee pressure disponible dans ggplot
+
+```{r}
+ggplot(data = pressure)+
+  aes(x= temperature, y = pressure)+
+  geom_col()
+```
+avant d'utiliser col() il est important de se rassurer que les deux variables x et y ont une correlation.
+
+## paramètres esthétiques de projection
+Dans le cours precedent nous avons vu les parametres :
+  .color 
+  .alpha
+  .size
+  .shape
+  
+  cette fois nous allons ajouter le parametre fill
+  
+Voyons tout de suite l'utilisation et la difference
+
+```{r}
+par(1,2)
+ggplot(data = diamonds)+
+  aes(x= cut, fill = cut)+
+  geom_bar()
+
+ggplot(data = diamonds)+
+  aes(x= cut, colour = cut)+
+  geom_bar()
+```
+
+La difference est simple : 
+  .color : donne un remplissage externe
+  .fill : remplissage interne
+  
+## fill 
+
+```{r}
+ggplot(data = diamonds) +
+  aes(x = cut, fill = clarity) +
+  geom_bar()
+```
+
+En utilisant une autre variable, on obtient le graphique empile.
+
+## parametre de la fonction geom_bar()
+
+  .position dodge
+  
+Nous avons obtenu un graphique empile en combinant les variables cut et clarity
+, mais grace au parametre position on peut modifier ce comportement : 
+
+```{r}
+ggplot(data = diamonds) +
+  aes(x = cut, fill = clarity) +
+  geom_bar(position = "dodge")
+```
+## position “stack”
+Pour créer un diagramme à barres empilées
+```{r}
+ggplot(data = diamonds) +
+  aes(x = cut, fill = clarity) +
+  geom_bar(position = "stack")
+```
+
+## position “fill”
+Pour que la barre prenne l’axe des y
+entièrement, utilisez position = "fill". {ggplot2} va superposer les rectangles puis les mettre à l’échelle dans chacune des barres.
+
+```{r}
+ggplot(data = diamonds) +
+  aes(x = cut, fill = clarity) +
+  geom_bar(position = "stack")
+```
+
+## position "identity"
+
+```{r}
+ggplot(data = diamonds) +
+  aes(x = cut, fill = clarity) +
+  geom_bar(position = "identity")
+```
+
+## Facette
+Terminons ce cours avec les facettes qui permette de diviser les graphes en une gride
+
+Il en existe deux types :
+  1. facet_wrap()
+  2. facet_grid()
+  
+## facet_grid()
+
+```{r}
+ggplot(data = diamonds)+
+  aes(x= color)+
+  geom_bar()+
+  facet_grid(rows = vars(clarity), cols = vars(cut))
+```
+  Comme vous venez de le voir facet_grid prend deux parametres
+  
+  .rows : pour la variable ligne
+  .cols : la variable colonne
+  
+  et chaque variable se trouve dans vars().
+  
+  voici un autre exemple.
+  
+```{r}
+ggplot(data = diamonds)+
+  aes(x = color, fill= color)+
+  geom_bar()+
+  facet_grid(cols = vars(cut))
+```
+
+## facet_wrap()
+
+C'est similaire a l'autre seulement on a pas de rows mais facets le reste ne change pas.
+
+```{r}
+ggplot(data = diamonds)+
+  aes(x = color, fill= color)+
+  geom_bar()+
+  facet_wrap(facets = vars(cut))
+```
+
+Nous arrivons a la fin de ce cours rendez-vous dans le cours prochain. 
+  
