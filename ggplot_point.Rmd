@@ -1,0 +1,199 @@
+---
+title: "ggplot_part_1"
+author: "MALANDA Juste Hadassa"
+date: "2024-06-15"
+output: html_document
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+```{r}
+install.packages("ggplot2")
+
+```
+
+## Greer des graphiques avec ggplot2
+
+Bienvenue Ce document donne une initiation a la creation de graphique en
+R utilisant le pacquage ggplot2.
+
+C'est un excellent moyen de commencer avec le langage R, il faut tout de
+meme avoir les notions de base.
+
+Nous allons apprendre : 1. comment creer des graphiques avec un modele
+{ggplot2} 2. Ajouter des variables a un graphique avec aesthetics 3.
+selectionner le 'type' de votre graphique avec geoms.
+
+## Importation de la bibliotheque
+
+pour cette premiere initiation nous allons utiliser la base de donnees
+"mpg" disponible dans R et qui s'intalle en meme temps que {ggplote}.
+
+```{r}
+library(ggplot2)
+```
+
+## importation de la base de donnees
+
+C'est un jeu de donnees qui contient les observations de 38 modeles de
+voitures pour l'agence de protection environnementale des Etats-Unis.
+
+```{r}
+mpg
+```
+
+## Description de quelques-une de varibles de la base mpg
+
+displ : taille du moteur (litre) hwy : rendement energetique sur
+l'autoroute.
+
+## Premier graphique
+
+Pour ce premier graphe nous allons visualiser la relation entre la
+taille du moteur (displ) et le rendement energetique sur l'autoroute
+(hwy)
+
+```{r}
+ggplot(data = mpg)+
+  aes(x= displ, y= hwy)+
+  geom_point()
+```
+
+## Interpretation du graphique
+
+Le graphique montre une relation negative entre la taille du moteur
+(displ) et le rendement energetique (hwy).
+
+Autrement dit lorsque la taille du moteur augmente le rendement
+energetique dimunu.
+
+## Explication du code
+
+ggplot(data =mpg) : cree un graphique vide (systeme de coordonnees
+auquel vous pouvez rajouter des couches).
+
+aes(x= displ, y= hwy) : On definit les variables a representer sur les
+differents axes du graphique.
+
+Dans notre exemple l'axe x represente la variable displ et l'axe y la
+variable hwy.
+
+geom_point() : Permet d'ajouter une couche de point au graphique (on
+obtient alors un nuage de points qui montre la relation entre deux
+variables).
+
+## Les etapes de la conception
+
+On commence par : 1. ggplot() 2. selection des variables aes() 3. ajout
+des elements au graphique avec la fonction geom\_
+
+## graphique boxplot class de voiture par rendement energetique
+
+```{r}
+ggplot(data= mpg)+
+  aes(x= class, y= hwy)+
+  geom_boxplot()
+```
+
+# nuage de point cty vs hwy
+
+```{r}
+ggplot(data= mpg)+
+  aes(x= cty, y= hwy)+
+  geom_point()
+```
+
+# Autres parametres de aes()
+
+Nous avons vu comment faire des graphiques particulierement le graphique
+en point (nuage de point) et les etapes qu'il faut appliquer.
+
+Now vous devez savoir qu'il existe des parametres applicables a la
+fonction aes() :
+
+1.  parametre color
+
+```{r}
+ggplot(data = mpg)+
+  aes(x= displ, y= hwy, colour = class)+
+  geom_point()
+```
+
+Ainsi on obtient un graphique qui permet de voir les moteurs associes a
+chaque type de voiture il s'agit ici des class. A partir de se simple
+graphique on peut deja avoir une idee sur le type de voiture que l'on
+veut.
+
+2.  parametre size
+
+```{r}
+ggplot(data = mpg)+
+  aes(x= displ, y= hwy, size = class)+
+  geom_point()
+```
+
+Size : permet de changer la taille des points dans le graphique
+
+Size prend une valeur discrete, ici il est juste question de montrer le
+fonctionnenent de parametres de aes()
+
+3.  parametre alpha
+
+```{r}
+ggplot(data = mpg)+
+  aes(x= displ, y= hwy, alpha = class)+
+  geom_point()
+```
+
+Alpha : permet de modifier la transparence des points.
+
+4.  parametre shape
+
+```{r}
+ggplot(data = mpg)+
+  aes(x= displ, y= hwy, shape = class)+
+  geom_point()
+```
+
+Shape : modifie la forme de points dans le graphique, adapter lorsqu'on
+a 6 modalites dans la variable.
+
+## graphique combine
+
+Il est possible d'utiliser l'ensemble des parametres de la fonction
+aes()
+
+Mais toute fois utiliser les graphiques simple et qui peuvent etre
+facilement interpretes.
+
+```{r}
+ggplot(data = mpg)+
+  aes(x= displ, y= hwy, colour = class, size= class, shape= class)+
+  geom_point()
+```
+
+## Couleur unique
+
+Nous avons vu qu'il etait possible de modifier les points du graphe en
+fonction d'une variable, grace au parametre color de la fonction aes().
+
+Maintenant si nous voulons une couleur unique il faut :
+
+```{r}
+ggplot(data = mpg)+
+  aes(x= displ, y= hwy)+
+  geom_point(colour = 'blue')
+```
+
+Vous avez compris la fonction geom peut aussi prendre les memes
+parametres que ceux de la fonction aes()
+
+```{r}
+ggplot(data = mpg)+
+  aes(x= displ, y= hwy)+
+  geom_point(colour = 'blue', shape= 3, alpha = 0.5)
+```
+
+Nous sommes arrives a la fin de ce cours, j'espere que cela vous servira
+dans la suite.
