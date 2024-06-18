@@ -1,0 +1,81 @@
+---
+title: "ggplot_boxplot"
+author: "MALANDA Juste"
+format: html
+editor: visual
+---
+
+## Boites a moustaches et graphique de comptage
+
+```{r}
+library(ggplot2)
+```
+
+## Creation d'un Boxplot
+
+```{r}
+ggplot(data = iris)+
+  aes(x= Species, y= iris$Sepal.Length)+
+  geom_boxplot()
+```
+
+Utilisant la base diamonds
+
+```{r}
+ggplot(data = diamonds)+
+  aes(x = cut, y= price)+
+  geom_boxplot()
+```
+
+## Gestion des Outliers
+
+```{r}
+ggplot(data = diamonds)+
+  aes(x = cut, y= price)+
+  geom_boxplot(outlier.fill = 'blue',
+               outlier.shape = 24,
+               outlier.stroke = 0.25)
+```
+
+## coord_flip()
+
+```{r}
+ggplot(data = diamonds)+
+  aes(x = cut, y= price)+
+  geom_boxplot(outlier.fill = 'blue',
+               outlier.shape = 24,
+               outlier.stroke = 0.25)+
+  coord_flip()
+```
+
+## geom_violin
+
+```{r}
+ggplot(data = mpg)+
+  aes(x = class, y= hwy)+
+  geom_violin()
+
+```
+
+Amelioration du graphique violin
+
+```{r}
+ggplot(data = diamonds)+
+  aes(x = cut, y= price)+
+  geom_violin(draw_quantiles = c(0.25, 0.5, 0.75))
+```
+
+## Heatmap 
+
+```{r}
+library(dplyr)
+```
+
+```{r}
+diamonds |>
+  count(cut, clarity) |>
+  ggplot()+
+  aes(x = cut, y= clarity, fill= n)+
+  geom_tile()
+  
+```
