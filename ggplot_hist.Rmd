@@ -1,0 +1,162 @@
+---
+title: "ggplot_hist"
+author: "MALANDA Juste Hadassa"
+date: "2024-06-18"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Histogrammes avec ggplot R
+
+Ce cours comme les precedents permet de maitriser la creer des histogrammes en utilsant la package ggplot2 du langage R. 
+ Nous verrons :
+  1. Creer des histogrammes
+  2. Aajouter le binwidth 
+  3. utilisation de doptplots, frequency, polygons, densities
+  
+### Installation
+
+```{r}
+install.packages("ggplot2")
+```
+
+## Creation d'un Histogramme
+
+### chargement de la library ou package 
+
+```{r}
+library(ggplot2)
+```
+
+### histogramme
+
+
+```{r}
+ggplot(data = diamonds)+
+  aes(x = carat)+
+  geom_histogram()
+```
+
+On constate le changement au niveau de geom_, pour le reste tout ne change pas.
+
+Retenez que l'histogramme c'est pour les variables quantitatives continues, et comme avec le graphique en barre on ne met pas de variable y, cette variable est directement calculee par le package.
+
+L'histogramme permet de voir les classes contenant le plus d'observations.
+
+## La largeur des classes
+
+```{r}
+ggplot(data = diamonds)+
+  aes(x= carat)+
+  geom_histogram(binwidth = 1)
+```
+Ce parametre permet de modifier le largeur des classes.
+
+## Nombre de classes
+
+```{r}
+ggplot(data = diamonds)+
+  aes(x= carat)+
+  geom_histogram(bins = 10)
+```
+
+## Limites
+
+Bouger les classes a droite ou a gauche grace au parametre boundary.
+
+```{r}
+ggplot(data = diamonds)+
+  aes(x = carat)+
+  geom_histogram(bins= 10, boundary= 0)
+```
+
+Il est important de bien choisir la valeur de la largeur de classe et du nombre de classe, cela permet de reveler des informations supplementaires.
+
+```{r}
+ggplot(data = diamonds)+
+  aes(x = carat)+
+  geom_histogram(binwidth = 0.01, boundary=0)
+```
+## Aes() : parametre fill et color
+
+```{r}
+par(1,2)
+
+ggplot(data = diamonds)+
+  aes(x= carat, fill= cut)+
+  geom_histogram()
+
+ggplot(data = diamonds)+
+  aes(x= carat, color= cut)+
+  geom_histogram()
+```
+
+```{r}
+par(1,2)
+
+ggplot(data = diamonds)+
+  aes(x= price, fill= cut)+
+  geom_histogram(binwidth = 1000, boundary= 0)
+
+ggplot(data = diamonds)+
+  aes(x= price, color= cut)+
+  geom_histogram(binwidth = 1000, boundary= 0)
+```
+
+## Ameliorer le graphique
+
+  . geom_freqpoly()
+  . geom_density()
+  . geom_dotplot()
+  
+### geom_freqpoly()
+
+Polygone de frequences, ce parametre utilise une ligne pour representer la meme information qu'un histogramme.
+
+```{r}
+ggplot(data = diamonds)+
+  aes(x = carat)+
+  geom_freqpoly()
+
+```
+
+```{r}
+ggplot(data = diamonds)+
+  aes(x = carat)+
+  geom_freqpoly(boundary=0, binwidth= 0.25)
+```
+### polygone de frequence multiple
+
+```{r}
+ggplot(data = diamonds)+
+  aes(x = carat, colour = cut)+
+  geom_freqpoly(boundary=0, binwidth= 0.25)
+```
+
+## Geom_density()
+
+cette fonction permet de resoudre les limites de la fonction precedente.
+Dans notre cas les groupes avec de faibles carat sont compresses.
+
+```{r}
+ggplot(data = diamonds)+
+  aes(x = carat, colour = cut)+
+  geom_density(boundary=0, binwidth= 0.25)
+```
+Ce graphique est plus parlant que l'autre.
+
+
+## geom_dotplot()
+
+permet de representer la distribution avec les points.
+
+```{r}
+ggplot(data = mpg)+
+  aes(x = displ)+
+  geom_dotplot(dotsize = 0.5, stackdir = "up", stackratio = 1.1)
+```
+
+Il est aussi possible d'utiliser les facetes.
